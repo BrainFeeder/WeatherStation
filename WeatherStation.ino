@@ -3,7 +3,6 @@
  By: Robrecht Wellens
 
  */
-
 #include <Wire.h> //I2C needed for sensors
 #include "SparkFunMPL3115A2.h" //Pressure sensor - Search "SparkFun MPL3115" and install from Library Manager
 #include "SparkFun_Si7021_Breakout_Library.h" //Humidity sensor - Search "SparkFun Si7021" and install from Library Manager
@@ -325,7 +324,6 @@ void loop()
       }
       Serial.print("[");
       // Building JSON output
-      outputData["forecast"] = forecast;
       outputData["humidity"] = humidity;
       outputData["tempH"] = temp_h;
       outputData["temp"] = temp;
@@ -350,8 +348,20 @@ void loop()
 
       // Print to Serial
       pHistory.prettyPrintTo(Serial);
+
+      jsonBuffer.clear();
+      
+      Serial.println(",");
+
+      JsonObject& text = jsonBuffer.createObject();
+      text["forecast"] = forecast;
+
+      // Print to Serial
+      text.prettyPrintTo(Serial);
       
       Serial.println("]");
+
+       jsonBuffer.clear();
     }
     
     Serial.println();
